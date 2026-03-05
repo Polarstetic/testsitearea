@@ -2,37 +2,8 @@
 <html>
 <head>
     <title>Resonance Speech</title>
-    <link rel="icon" type="image/png" href="../static/Rahh.png">
-    <style>
-        #recordBtn {
-            width: 100%;
-            padding: 40px;
-            font-family: Arial;
-            font-weight: bold;
-            font-size: 2em;
-            background: #171717;
-            color: white;
-            border-color: #000000;
-            border-width: 3px;
-            border-radius: 15px;
-        }
-        .sentence-block { 
-            padding: 20px;
-            margin: 10px 0;
-            background: #e7e7e7;
-            border-radius: 10px;
-            border-color: #dbdbdb;
-            border-width: 1px; 
-            font-family: Arial;
-            font-size: 1.5em;
-            cursor: pointer; 
-        }
-        body {
-            background-color: #F9F9F9;
-            margin: 0;
-            padding: 20px;
-        }
-    </style>
+    <link rel="icon" type="image/png" href = "../static/Rahh.png">
+    <link rel="stylesheet" href = "../static/style.css">
 </head>
 <body>
 
@@ -46,8 +17,7 @@
         const recordBtn = document.getElementById('recordBtn');
 
         recordBtn.addEventListener('click', async () => {
-            if (!isRecording) {
-                // starts
+            if (!isRecording) { // starts, checks if its not correctly recording
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); // asks if the mic can be used
                 mediaRecorder = new MediaRecorder(stream);
                 
@@ -78,25 +48,18 @@
                         newBlock.innerText = data.text; // takes the data from the transcribed audio
                         document.getElementById('transcriptArea').appendChild(newBlock);
                     }
-                    
-                    // reset
                     recordBtn.innerText = 'Tap to Start Speaking';
                     audioChunks = []; // reset for next sentence
                 };
 
                 mediaRecorder.start();
                 recordBtn.innerText = 'Tap to Stop Recording';
-                recordBtn.style.background = '#1e1e1e';
-                recordBtn.style.borderWidth = '5px';
-                recordBtn.style.padding = '45px';
+                recordBtn.classList.add('recording')
                 isRecording = true;
 
-            } else {
-                // stop rec
+            } else { // other wise if you click the button it'll stop the current recording
                 mediaRecorder.stop();
-                recordBtn.style.background = '#171717'; // reset the color and stuff
-                recordBtn.style.borderWidth = '3px';
-                recordBtn.style.padding = '40px';
+                recordBtn.classList.remove('recording')
                 isRecording = false;
             }
         });
