@@ -21,7 +21,7 @@
 
         recordBtn.addEventListener('click', async () => {
             if (!isRecording) {
-                // START RECORDING
+                // starts
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
                 
@@ -32,12 +32,12 @@
                 mediaRecorder.onstop = async () => {
                     recordBtn.innerText = 'Processing...';
                     
-                    // Package the audio into a file
+                    // package the audio into a file
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                     const formData = new FormData();
                     formData.append('audio', audioBlob);
 
-                    // Send to your Node.js backend
+                    // backend
                     const response = await fetch('/api/transcribe', {
                         method: 'POST',
                         body: formData
@@ -45,7 +45,7 @@
                     
                     const data = await response.json();
                     
-                    // Create the new "Sentence Block" on screen
+                    // makes text blocck
                     if (data.text) {
                         const newBlock = document.createElement('div');
                         newBlock.className = 'sentence-block';
@@ -54,18 +54,18 @@
                     }
                     
                     recordBtn.innerText = 'Tap to Speak';
-                    audioChunks = []; // Reset for next sentence
+                    audioChunks = []; // reset for next sentence
                 };
 
                 mediaRecorder.start();
                 recordBtn.innerText = 'Tap to Stop';
-                recordBtn.style.background = '#4CAF50'; // Turn green
+                recordBtn.style.background = '#4CAF50';
                 isRecording = true;
 
             } else {
                 // STOP RECORDING
                 mediaRecorder.stop();
-                recordBtn.style.background = '#ff4d4d'; // Turn red
+                recordBtn.style.background = '#ff4d4d';
                 isRecording = false;
             }
         });

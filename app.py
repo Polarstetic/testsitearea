@@ -8,54 +8,52 @@ from google.oauth2 import service_account
 app = Flask(__name__)
 CORS(app)
 
-# 1. Securely load Google Credentials from the Cloud Vault
+# load google credentials
 google_creds_string = os.environ.get("GOOGLE_CREDENTIALS_JSON")
 if google_creds_string:
     creds_dict = json.loads(google_creds_string)
     credentials = service_account.Credentials.from_service_account_info(creds_dict)
     client = speech.SpeechClient(credentials=credentials)
 else:
-    # Fallback for your local computer
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./google-credentials.json"
-    client = speech.SpeechClient()
+    pass
 
-# 2. NEW: Serve the HTML Website
+# website
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# 3. Your existing Audio Transcription Route
+# audio transcription
 @app.route('/api/transcribe', methods=['POST'])
 def transcribe_audio():
     try:
-        # Get the audio file from the frontend request
+        # get the audio file from the frontend request
         audio_file = request.files['audio']
         audio_content = audio_file.read()
 
-        # Package the audio and instructions for Google
+        # package the audio and instructions for google
         audio = speech.RecognitionAudio(content=audio_content)
         config = speech.RecognitionConfig(
             encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
             sample_rate_hertz=48000,
             language_code="en-US",
-            enable_automatic_punctuation=True, # The grammar magic!
+            enable_automatic_punctuation=True, # allows for grammar to exist
         )
 
-        # Send to Google and wait for the reply
+        # send to google
         response = client.recognize(config=config, audio=audio)
 
-        # Extract just the text from Google's complex response
+        # extract google response
         transcript = ""
         for result in response.results:
             transcript += result.alternatives[0].transcript + "\n"
 
-        # Send the text back to the frontend
+        # wend the text back to the frontend
         return jsonify({'text': transcript.strip()})
 
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'error': 'Failed to transcribe'}), 500
 
-# Start the server on Port 3000
+# start the server on Port 3000
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
