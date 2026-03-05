@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Accessible Dictation Typer</title>
+    <title>Resonance Speech</title>
+    <link rel="icon" type="image/png" href="../static/Rahh.png">
     <style>
-        /* Giant button for accessibility */
         #recordBtn {
             width: 100%;
-            padding: 50px;
-            font-family: Arial, sans-serif;
+            padding: 45px;
+            font-family: 'Open Sans', ;
+            font-weight: bold;
             font-size: 2em;
-            background: #ff4d4d;
+            background: #171717;
             color: white;
-            border: none;
-            border-radius: 20px;
+            border-color: #000000;
+            border-width: 3px;
+            border-radius: 15px;
         }
         .sentence-block { 
             padding: 20px;
             margin: 10px 0;
             background: #e0e0e0;
             border-radius: 10px;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Open Sans', ;
             font-size: 1.5em;
+            -webkit-text-stroke: #000000;
+            -webkit-text-stroke-width: medium;
             cursor: pointer; 
+        }
+
+        body {
+            background-color: #F9F9F9;
+            margin: 0;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
 
-    <button id="recordBtn">Tap to Speak</button>
+    <button id="recordBtn">Tap to Start</button>
     <div id="transcriptArea"></div>
 
     <script>
@@ -76,13 +86,14 @@
 
                 mediaRecorder.start();
                 recordBtn.innerText = 'Tap to Stop';
-                recordBtn.style.background = '#4CAF50';
+                recordBtn.style.background = '#1e1e1e';
+                recordBtn.style.borderWidth = '5px';
                 isRecording = true;
 
             } else {
-                // STOP RECORDING
+                // stop rec
                 mediaRecorder.stop();
-                recordBtn.style.background = '#ff4d4d';
+                recordBtn.style.background = '#171717';
                 isRecording = false;
             }
         });
