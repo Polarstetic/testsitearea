@@ -1,33 +1,61 @@
 #recordBtn {
     width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     padding: 40px;
-    font-family: Arial;
-    font-weight: bold;
-    font-size: 2em;
-    background: #171717;
+    font-size: 26px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    background: linear-gradient(#171717 0%, #313131 100%);
     color: white;
-    border-color: #000000;
-    border-width: 3px;
+    border-color: linear-gradient(180deg, #171717 0%, #313131 100%);
+    border-width: 2px;
     border-radius: 15px;
+    box-shadow: 12px 12px 24px #575757a3;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out 0s;
 }
+
+#recordBtn::before {
+    border-radius: 1000px;
+    width: 100%;
+    height: 40px;
+    box-shadow: 0 0 60px #575757a3;
+    position: absolute;
+    top: 100%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all 0.25s ease;
+}
+#recordBtn:hover {
+  background: linear-gradient(#242424 0%, #343434 100%);
+  border-width: 0px;
+  transform: translateY(-6px);
+  transform: scale(1.01);
+}
+
 #recordBtn.recording {
     background: #1e1e1e;
     border-width: 5px;
     padding: 45px;
 }
 .sentence-block { 
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     padding: 20px;
     margin: 10px 0;
     background: #e7e7e7;
     border-radius: 10px;
     border-color: #dbdbdb;
     border-width: 1px; 
-    font-family: Arial;
-    font-size: 1.5em;
+    font-size: 20px;
     cursor: pointer; 
 }
 body {
     background-color: #F9F9F9;
     margin: 0;
     padding: 20px;
+    font-family: 'Nunito', sans-serif;
 }

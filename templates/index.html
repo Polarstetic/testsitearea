@@ -24,7 +24,7 @@
                 mediaRecorder.ondataavailable = event => { // catching the audio that comes from the mic
                     audioChunks.push(event.data);
                 };
-
+                
                 mediaRecorder.onstop = async () => { // when the user stops recording
                     recordBtn.innerText = 'Processing'; // updating the button text
                     
