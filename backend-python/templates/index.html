@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accessible Dictation Typer</title>
+    <style>
+        /* Giant button for accessibility */
+        #recordBtn { width: 100%; padding: 50px; font-size: 2em; background: #ff4d4d; color: white; border: none; border-radius: 20px;}
+        .sentence-block { padding: 20px; margin: 10px 0; background: #e0e0e0; border-radius: 10px; font-size: 1.5em; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <button id="recordBtn">Tap to Speak</button>
+    <div id="transcriptArea"></div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        const recordBtn = document.getElementById('recordBtn');
+
+        recordBtn.addEventListener('click', async () => {
+            if (!isRecording) {
+                // START RECORDING
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = async () => {
+                    recordBtn.innerText = 'Processing...';
+                    
+                    // Package the audio into a file
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const formData = new FormData();
+                    formData.append('audio', audioBlob);
+
+                    // Send to your Node.js backend
+                    const response = await fetch('/api/transcribe', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    // Create the new "Sentence Block" on screen
+                    if (data.text) {
+                        const newBlock = document.createElement('div');
+                        newBlock.className = 'sentence-block';
+                        newBlock.innerText = data.text;
+                        document.getElementById('transcriptArea').appendChild(newBlock);
+                    }
+                    
+                    recordBtn.innerText = 'Tap to Speak';
+                    audioChunks = []; // Reset for next sentence
+                };
+
+                mediaRecorder.start();
+                recordBtn.innerText = 'Tap to Stop';
+                recordBtn.style.background = '#4CAF50'; // Turn green
+                isRecording = true;
+
+            } else {
+                // STOP RECORDING
+                mediaRecorder.stop();
+                recordBtn.style.background = '#ff4d4d'; // Turn red
+                isRecording = false;
+            }
+        });
+    </script>
+</body>
+</html>
