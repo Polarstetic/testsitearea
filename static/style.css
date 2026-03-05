@@ -36,9 +36,9 @@
 }
 
 #recordBtn.recording {
-    background: #1e1e1e;
-    border-width: 5px;
-    padding: 45px;
+    background: linear-gradient(#242424 0%, #343434 100%);
+    border-width: 3px;
+    padding: 44px;
 }
 .sentence-block { 
     align-items: center;
@@ -46,15 +46,13 @@
     text-align: center;
     padding: 20px;
     margin: 10px 0;
-    background: #e7e7e7;
+    background: linear-gradient(#dcdcdc 0%, #ededed 100%);
     border-radius: 10px;
-    border-color: #dbdbdb;
-    border-width: 1px; 
     font-size: 20px;
-    cursor: pointer; 
+    transition: all 0.3s ease-in-out 0s;
 }
 body {
-    background-color: #F9F9F9;
+    background-color: linear-gradient(#f2f2f2 0%, #ffffff 100%);
     margin: 0;
     padding: 20px;
     font-family: 'Nunito', sans-serif;
