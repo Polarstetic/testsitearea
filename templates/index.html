@@ -6,7 +6,7 @@
     <style>
         #recordBtn {
             width: 100%;
-            padding: 45px;
+            padding: 40px;
             font-family: 'Open Sans', ;
             font-weight: bold;
             font-size: 2em;
@@ -37,7 +37,7 @@
 </head>
 <body>
 
-    <button id="recordBtn">Tap to Start</button>
+    <button id="recordBtn">Tap to Start Speaking</button>
     <div id="transcriptArea"></div>
 
     <script>
@@ -57,7 +57,7 @@
                 };
 
                 mediaRecorder.onstop = async () => {
-                    recordBtn.innerText = 'Processing...';
+                    recordBtn.innerText = 'Processing';
                     
                     // package the audio into a file
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
@@ -80,12 +80,12 @@
                         document.getElementById('transcriptArea').appendChild(newBlock);
                     }
                     
-                    recordBtn.innerText = 'Tap to Speak';
+                    recordBtn.innerText = 'Tap to Start Speaking';
                     audioChunks = []; // reset for next sentence
                 };
 
                 mediaRecorder.start();
-                recordBtn.innerText = 'Tap to Stop';
+                recordBtn.innerText = 'Tap to Stop Recording';
                 recordBtn.style.background = '#1e1e1e';
                 recordBtn.style.borderWidth = '5px';
                 isRecording = true;
