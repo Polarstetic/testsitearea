@@ -65,6 +65,19 @@
                 isRecording = false;
             }
         });
+
+        function saveTranscripts() {
+            const transcriptArea = document.getElementById('transcriptArea').innerHTML;
+            localStorage.setItem('myTranscripts', transcriptArea);
+        }
+
+        window.onload = () => {
+            const savedData = localStorage.getItem('myTranscripts');
+            if (savedData) {
+                document.getElementById('transcriptArea').innerHTML = savedData;
+            }
+        };
+    
     </script>
 </body>
 </html>
