@@ -44,10 +44,9 @@
                     
                     // makes text block
                     if (data.text) {
-                        const newBlock = document.createElement('div');
+                        const newBlock = document.createElement('div'); //makes the new block element
                         newBlock.className = 'sentence-block';
-                        
-                        // Inject clean HTML directly
+                        //lovely html now
                         newBlock.innerHTML = `
                             <span class="text-content">${data.text}</span>
                             <button class="copy-btn" onclick="copyText(this)">Copy</button>
@@ -84,19 +83,15 @@
                 document.getElementById('transcriptArea').innerHTML = savedData;
             }
         };
-            // The function that does the copying
+        /// the function that does the copying
         function copyText(btnElement) {
-            // 1. Find the text span right next to the button that was clicked
-            const textToCopy = btnElement.previousElementSibling.innerText;
-            
-            // 2. Copy it
+            const textToCopy = btnElement.previousElementSibling.innerText; //finds what text to copy
             navigator.clipboard.writeText(textToCopy);
             
-            // 3. Toggle the CSS class for visual feedback
+            //visuals
             btnElement.innerText = 'Copied!';
             btnElement.classList.add('copied-state');
-            
-            // 4. Reset it after 2 seconds
+            //more visuals so it looks normal after 2s
             setTimeout(() => {
                 btnElement.innerText = 'Copy';
                 btnElement.classList.remove('copied-state');
