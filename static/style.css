@@ -101,7 +101,7 @@ body {
     transition: all 0.2s ease;
 }
 .copy-btn:hover {
-    background: #313131;
+    background: linear-gradient(#252525 0%, #494949 100%);
 }
 
 .copy-btn.copied-state {
