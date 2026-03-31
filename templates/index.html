@@ -67,12 +67,12 @@
             }
         });
 
-        function saveTranscripts() {
+        function saveTranscripts() { //so the text blocks dont go away when you reload
             const transcriptArea = document.getElementById('transcriptArea').innerHTML;
-            localStorage.setItem('myTranscripts', transcriptArea);
+            localStorage.setItem('myTranscripts', transcriptArea); //saves it locally 
         }
 
-        window.onload = () => {
+        window.onload = () => { //this allows the saved block to load back up
             const savedData = localStorage.getItem('myTranscripts');
             if (savedData) {
                 document.getElementById('transcriptArea').innerHTML = savedData;
