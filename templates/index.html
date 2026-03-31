@@ -48,6 +48,7 @@
                         newBlock.className = 'sentence-block';
                         newBlock.innerText = data.text; // takes the data from the transcribed audio
                         document.getElementById('transcriptArea').appendChild(newBlock);
+                        saveTranscripts(); //saves
                     }
                     recordBtn.innerText = 'Tap to Start Speaking';
                     recordBtn.classList.remove('processing')
