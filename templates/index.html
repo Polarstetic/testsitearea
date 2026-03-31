@@ -43,31 +43,27 @@
                     
                     const data = await response.json();
                     
-                    // makes text block
+                    // text block
                     if (data.text) {
                         if (targetBlock) {
-                            // OVERWRITE EXISTING TEXT
+                            //allows the target block of text to be overwritten
                             targetBlock.innerText = data.text;
-                            targetBlock.parentElement.classList.remove('is-updating'); // Remove the red highlight
-                            targetBlock = null; // Reset the target so the next recording makes a new block
+                            targetBlock.parentElement.classList.remove('is-updating'); //is done so no highlight anymore
+                            targetBlock = null;//reset
                         } else {
-                            // CREATE A NEW TEXT BLOCK (Your exact clean HTML from earlier)
+                            //allows the text block to exist
                             const newBlock = document.createElement('div');
                             newBlock.className = 'sentence-block';
-                            
-                            // Notice we added onclick="reRecordText(this)" to the span!
+                        
                             newBlock.innerHTML = `
                                 <span class="text-content" onclick="reRecordText(this)" title="Tap to re-record">${data.text}</span>
                                 <button class="copy-btn" onclick="copyText(this)">Copy</button>
                             `;
-                            
                             document.getElementById('transcriptArea').appendChild(newBlock);
                         }
-                        
-                        // Save to local storage after either action
-                        saveTranscripts();
+                        saveTranscripts(); //saving locally
                     } else {
-                        // If the Google API fails or hears nothing, clean up the UI anyway
+                        //if it doesnt work then it cleans up
                         if (targetBlock) {
                             targetBlock.parentElement.classList.remove('is-updating');
                             targetBlock = null;
@@ -116,15 +112,10 @@
             }, 2000);
         }
         function reRecordText(textElement) {
-            if (isRecording) return; // Prevent clicking if already recording
+            if (isRecording) return; //doesnt work if already recording
             
-            // 1. Set the target to the specific text span you just clicked
             targetBlock = textElement;
-            
-            // 2. Change its background to red so you know it's selected
-            targetBlock.parentElement.classList.add('is-updating');
-            
-            // 3. Programmatically click the main Record button to start the mic!
+            targetBlock.parentElement.classList.add('is-updating'); //animation so you know it's recording
             document.getElementById('recordBtn').click();
         }
     </script>
