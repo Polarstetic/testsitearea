@@ -105,14 +105,12 @@ body {
     padding: 10px 20px;
     border-radius: 8px;
     font-size: 16px;
-    font-family: inherit;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 .copy-btn:hover {
     background: linear-gradient(#252525 0%, #494949 100%);
 }
-
 .copy-btn.copied-state {
     background: #4CAF50;
     border-color: #4CAF50;
