@@ -46,9 +46,15 @@
                     if (data.text) {
                         const newBlock = document.createElement('div');
                         newBlock.className = 'sentence-block';
-                        newBlock.innerText = data.text; // takes the data from the transcribed audio
+                        
+                        // Inject clean HTML directly
+                        newBlock.innerHTML = `
+                            <span class="text-content">${data.text}</span>
+                            <button class="copy-btn" onclick="copyText(this)">Copy</button>
+                        `;
+                        
                         document.getElementById('transcriptArea').appendChild(newBlock);
-                        saveTranscripts(); //saves
+                        saveTranscripts();
                     }
                     recordBtn.innerText = 'Tap to Start Speaking';
                     recordBtn.classList.remove('processing')
@@ -78,7 +84,24 @@
                 document.getElementById('transcriptArea').innerHTML = savedData;
             }
         };
-    
+            // The function that does the copying
+        function copyText(btnElement) {
+            // 1. Find the text span right next to the button that was clicked
+            const textToCopy = btnElement.previousElementSibling.innerText;
+            
+            // 2. Copy it
+            navigator.clipboard.writeText(textToCopy);
+            
+            // 3. Toggle the CSS class for visual feedback
+            btnElement.innerText = 'Copied!';
+            btnElement.classList.add('copied-state');
+            
+            // 4. Reset it after 2 seconds
+            setTimeout(() => {
+                btnElement.innerText = 'Copy';
+                btnElement.classList.remove('copied-state');
+            }, 2000);
+        }
     </script>
 </body>
 </html>
