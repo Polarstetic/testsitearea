@@ -14,6 +14,7 @@
         let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
+        let targetBlock = null; //text tapped or not
         const recordBtn = document.getElementById('recordBtn');
 
         recordBtn.addEventListener('click', async () => {
@@ -44,16 +45,33 @@
                     
                     // makes text block
                     if (data.text) {
-                        const newBlock = document.createElement('div'); //makes the new block element
-                        newBlock.className = 'sentence-block';
-                        //lovely html now
-                        newBlock.innerHTML = `
-                            <span class="text-content">${data.text}</span>
-                            <button class="copy-btn" onclick="copyText(this)">Copy</button>
-                        `;
+                        if (targetBlock) {
+                            // OVERWRITE EXISTING TEXT
+                            targetBlock.innerText = data.text;
+                            targetBlock.parentElement.classList.remove('is-updating'); // Remove the red highlight
+                            targetBlock = null; // Reset the target so the next recording makes a new block
+                        } else {
+                            // CREATE A NEW TEXT BLOCK (Your exact clean HTML from earlier)
+                            const newBlock = document.createElement('div');
+                            newBlock.className = 'sentence-block';
+                            
+                            // Notice we added onclick="reRecordText(this)" to the span!
+                            newBlock.innerHTML = `
+                                <span class="text-content" onclick="reRecordText(this)" title="Tap to re-record">${data.text}</span>
+                                <button class="copy-btn" onclick="copyText(this)">Copy</button>
+                            `;
+                            
+                            document.getElementById('transcriptArea').appendChild(newBlock);
+                        }
                         
-                        document.getElementById('transcriptArea').appendChild(newBlock);
+                        // Save to local storage after either action
                         saveTranscripts();
+                    } else {
+                        // If the Google API fails or hears nothing, clean up the UI anyway
+                        if (targetBlock) {
+                            targetBlock.parentElement.classList.remove('is-updating');
+                            targetBlock = null;
+                        }
                     }
                     recordBtn.innerText = 'Tap to Start Speaking';
                     recordBtn.classList.remove('processing')
@@ -96,6 +114,18 @@
                 btnElement.innerText = 'Copy';
                 btnElement.classList.remove('copied-state');
             }, 2000);
+        }
+        function reRecordText(textElement) {
+            if (isRecording) return; // Prevent clicking if already recording
+            
+            // 1. Set the target to the specific text span you just clicked
+            targetBlock = textElement;
+            
+            // 2. Change its background to red so you know it's selected
+            targetBlock.parentElement.classList.add('is-updating');
+            
+            // 3. Programmatically click the main Record button to start the mic!
+            document.getElementById('recordBtn').click();
         }
     </script>
 </body>
